@@ -1,7 +1,17 @@
 {
+  "name": "com.voc.dc.koori.js",
+  "version": "3.4.0",
+  "description": "A Discord bot of project Genshin Spirit, run in Discord.js V14",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vocaloid2048",
+  "license": "ISC",
   "dependencies": {
     "discord.js": "^14.7.1",
     "openai": "^3.1.0",
+    "sqlite3": "^5.1.4",
     "turndown": "^7.1.1"
   }
 }

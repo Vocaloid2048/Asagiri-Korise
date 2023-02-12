@@ -1,0 +1,7 @@
+*.iml
+.gradle
+/private.js
+/db
+/doc
+/node_modules
+/package-lock.json
