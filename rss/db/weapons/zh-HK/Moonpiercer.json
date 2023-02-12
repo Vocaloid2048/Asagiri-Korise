@@ -1,0 +1,12 @@
+{
+  "name": "Moonpiercer",
+  "rare": 4,
+  "weapon": "Polearm",
+  "isComingSoon": false,
+  "desc": "從蘭那羅的故事中得到的武器。形制如同巨大的箭矢，能夠作為槍矛使用。",
+  "first_status": "EnRech%",
+  "second_status": "ATK",
+  "skill_name": "幽林月影",
+  "skill_desc": "觸發燃燒、原激化、超激化、蔓激化、綻放、超綻放或烈綻放後，將在角色周圍產生至多存在10秒的「蘇生之葉」。拾取蘇生之葉的角色攻擊力提升16%，持續12秒。每20秒至多依此方式產生一片蘇生之葉。角色處於隊伍後臺時也能觸發。",
+  "obtain_way": "FORGE"
+}
