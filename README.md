@@ -1,2 +1,2 @@
-# Genshin-Spirit-Discord-bot
+# Koori-Asai
  A Discord bot of project Genshin Spirit
