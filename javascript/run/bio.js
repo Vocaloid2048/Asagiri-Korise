@@ -6,7 +6,7 @@ const bio_embed = new EmbedBuilder()
 	.setTitle("**朝霧冰瀬**")
 	.setThumbnail('attachment://app_ico_round.png')
 	.setDescription(
-        "My name is 朝霧冰瀬"
+        "My name is 朝霧冰瀬 (Asagiri korise)"
     );
     
 exports.bio_img_url = "./rss/bot/app_ico_round.png"     

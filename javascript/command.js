@@ -178,8 +178,8 @@ module.exports = {
 			)
 	),
 
-	koori_asai : new SlashCommandBuilder()
-	.setName("koori_asai")
+	korise : new SlashCommandBuilder()
+	.setName("korise")
 	.setNameLocalizations({
 		"zh-TW" : "冰瀬",
 		"zh-CN" : "冰瀬"
@@ -216,41 +216,66 @@ module.exports = {
 					.setNameLocalizations({
 						"zh-TW" : "背包"
 					})
-					.setDescription("Please select which type of item you would like to see")
+					.setDescription("Let's see what's in the backpack")
 					.setDescriptionLocalizations({
-						"zh-TW" : "請選擇您要查看的物件類型"
+						"zh-TW" : "來看看背包有什麼東西"
 					})
-					.addStringOption(option =>
+					.addIntegerOption(option => 
 						option
-						.setRequired(true)
-						.setName("name_char")
+						.setName('backpack_type')
 						.setNameLocalizations({
-							"zh-TW" : "角色名稱"
+							"zh-TW" : "打算查看物件類型"
 						})
-						.setDescription("Please type name of the item")
-						.setAutocomplete(true)
+						.setDescription("Please select which type of item you would like to see")
+						.setDescriptionLocalizations({
+							"zh-TW" : "請選擇您要查看的物件類型"
+						})
+						.addChoices(
+							{name: lang.ui_siptik_name, value: 0},
+							{name: lang.title_char, value: 1},
+							{name: lang.title_weapons, value: 2},
+							//{name: lang.title_artifacts, value: 3},
+						)
 					),
 			)
 			.addSubcommand((subcommand) =>
 				subcommand
-					.setName('weapon')
+					.setName('train')
 					.setNameLocalizations({
-						"zh-TW" : "武器"
+						"zh-TW" : "養成"
 					})
-					.setDescription("Please choose a weapon to view")
+					.setDescription("Which item you would like to train today?")
 					.setDescriptionLocalizations({
-						"zh-TW" : "請選擇您要查看的武器"
+						"zh-TW" : "今天打算養成甚麼？"
 					})
-					.addStringOption(option =>
+					.addIntegerOption(option => 
 						option
-						.setRequired(true)
-						.setName("name_weapon")
+						.setName('train_type')
 						.setNameLocalizations({
-							"zh-TW" : "武器名稱"
+							"zh-TW" : "養成"
 						})
-						.setDescription("Please type name of the item")
-						.setAutocomplete(true)
+						.setDescription("Please select which type of item you would like to train")
+						.setDescriptionLocalizations({
+							"zh-TW" : "請選擇您要養成的物件類型"
+						})
+						.addChoices(
+							//{name: lang.ui_siptik_name, value: 0},
+							{name: lang.title_char, value: 1},
+							{name: lang.title_weapons, value: 2},
+							//{name: lang.title_artifacts, value: 3},
+						)
 					),
+			)
+			.addSubcommand((subcommand) =>
+				subcommand
+					.setName('account')
+					.setNameLocalizations({
+						"zh-TW" : "帳戶"
+					})
+					.setDescription("Print my account status")
+					.setDescriptionLocalizations({
+						"zh-TW" : "列印我的帳戶狀態"
+					}),
 			),
 
 	async autocomplete(interaction, dataList, tag) {
@@ -317,6 +342,9 @@ module.exports = {
 					);
 				}
 				break;
+			}
+			case "game" :{
+
 			}
 		}
 	}

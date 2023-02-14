@@ -7,6 +7,7 @@ const fs = require('fs');
 var lang = require('./javascript/lang/zh-TW');
 const { channel } = require('diagnostics_channel');
 const { search } = require('./javascript/command');
+const db = require('./javascript/database');
 
 var langName = "zh-TW"
 const client = new Client({ 
@@ -43,6 +44,7 @@ client.on('ready', () => {
     weapon_list_load();
     art_list_load();
     tcg_list_load();
+    db.init();
 });
 
 client.on('messageCreate', async (message) => {
@@ -104,6 +106,10 @@ client.on('interactionCreate', async interaction => {
                     koori_asai.ask(interaction, interaction.options.get("want_to_say").value)
                 }
                 break
+            }
+            case "game":{
+                const game_index = require("./javascript/mini_game/game_index")
+                await game_index.run(interaction)
             }
         }
     } else if (interaction.isAutocomplete()) {
@@ -252,7 +258,8 @@ async function registCommand(){
         COMMAND.help,
         COMMAND.data,
         //COMMAND.search,
-        COMMAND.koori_asai
+        COMMAND.korise,
+        COMMAND.game
     ];
     const rest = new REST({ version: '10' }).setToken(TOKEN);
     try {
@@ -267,7 +274,8 @@ async function registCommand(){
         client.commands.set(COMMAND.help.name, COMMAND);
         client.commands.set(COMMAND.data.name, COMMAND);
         //client.commands.set(COMMAND.search.name, COMMAND);
-        client.commands.set(COMMAND.koori_asai.name, COMMAND);
+        client.commands.set(COMMAND.korise.name, COMMAND);
+        client.commands.set(COMMAND.game.name, COMMAND);
     } catch (error) {
         console.error(error);
     }
