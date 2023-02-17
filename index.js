@@ -6,8 +6,9 @@ const item_rss = require("./javascript/itemRSS")
 const fs = require('fs');
 var lang = require('./javascript/lang/zh-TW');
 const { channel } = require('diagnostics_channel');
-const { search } = require('./javascript/command');
+const { search, data } = require('./javascript/command');
 const db = require('./javascript/database');
+const sendError = require("./javascript/run/sendError");
 
 var langName = "zh-TW"
 const client = new Client({ 
@@ -18,7 +19,7 @@ const client = new Client({
         GatewayIntentBits.GuildMessageTyping,
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.DirectMessageReactions,
-        GatewayIntentBits.DirectMessageTyping,
+        GatewayIntentBits.DirectMessageTyping
     ],
     partials: [
         Partials.Channel,
@@ -44,17 +45,26 @@ client.on('ready', () => {
     weapon_list_load();
     art_list_load();
     tcg_list_load();
-    db.init();
+    db.init(client);
 });
 
-client.on('messageCreate', async (message) => {
-    //console.log(message.content);
-    //if(message.author.bot) return;
-    //const koori_asai = require("./javascript/chatbot")
-    //koori_asai.ask2(message, client)
+client.on('messageCreate', async message => {
+    /*
+    if(message.author.bot){return;}
 
+    const command = message.content.toLowerCase().replace(prefix, '').split(" ");
+    if(command[0] === "?voc"){
+        switch(command[1]){
+            case "cmd_cache_list":{
+                message.channel.send()
+            }
+        }
+    }
+    */
 });
-
+/**
+ * @param {import('discord.js').Interaction} interaction
+ */
 client.on('interactionCreate', async interaction => {
     if (interaction.user.bot) return;
     if (interaction.isChatInputCommand()){
@@ -73,7 +83,7 @@ client.on('interactionCreate', async interaction => {
             case "data" : {
                 if(interaction.options.get("name_char") !== null){
                     const character = require('./javascript/run/character');
-                    await character.run(interaction, [interaction.options.get("name_char").value,"MAIN"])
+                    await character.run(interaction, ["CHARACTER.class",interaction.options.get("name_char").value,"MAIN"])
                 }else if(interaction.options.get("name_weapon") !== null){
                     const weapon = require('./javascript/run/weapon');
                     await weapon.run(interaction, interaction.options.get("name_weapon").value)
@@ -133,10 +143,22 @@ client.on('interactionCreate', async interaction => {
 	} else if (interaction.isButton()){
         const command = interaction.client.commands.get(interaction.commandName);
         const character = require('./javascript/run/character');
+        const game_index = require('./javascript/mini_game/game_index');
         
 		try {
             interaction.message.delete();
             var dataList = interaction.customId.split("XPR") ;
+            switch(dataList[0]){
+                // [CHARACTER.class, itemName, position1, position2, ...]
+                case "CHARACTER.class":{
+                    await character.run(interaction, dataList);
+                    break;
+                }
+                // [BACKPACK.class, game_page, pageID, choiceID]
+                case "BACKPACK.class":{
+                    await game_index.backpack_print(interaction, interaction.user, dataList[2], dataList[3])
+                }
+            }
             //switch(targetID){
                 // Common
                 //case "deleteMSG" : {interaction.message.delete(); break;}
@@ -151,10 +173,9 @@ client.on('interactionCreate', async interaction => {
                 //case "char_battle_talent_burst" : {await character.run(interaction, interaction.customId.split("XPR")[1], targetID, "BATTLE_SKILL"); break;}
             
             //}
-            await character.run(interaction, dataList);
             
         } catch (error) {
-            console.error(error);
+            sendError.run(interaction, error, sendError.CODE_ERROR);
         }
     }
 });
@@ -164,7 +185,7 @@ async function char_list_load(){
     fs.readFile("./rss/db/char/char_list.json" , "utf-8", async (err, jsonString) => {
         // Error MSG
         if(err){
-            console.log("ERR : "+err);
+            sendError.run(client, err, sendError.CODE_ERROR);
         } else {
             try{
                 const json = JSON.parse(jsonString);
@@ -173,7 +194,7 @@ async function char_list_load(){
                 }
             } catch (err) {
                 // Error MSG
-                console.log("ERR : "+err);
+                sendError.run(client, err, sendError.CODE_ERROR);
             }
         }
     });
@@ -184,7 +205,7 @@ async function weapon_list_load(){
     fs.readFile("./rss/db/weapons/weapon_list.json" , "utf-8", async (err, jsonString) => {
         // Error MSG
         if(err){
-            console.log("ERR : "+err);
+            sendError.run(client, err, sendError.CODE_ERROR);
         } else {
             try{
                 const json = JSON.parse(jsonString);
@@ -193,7 +214,7 @@ async function weapon_list_load(){
                 }
             } catch (err) {
                 // Error MSG
-                console.log("ERR : "+err);
+                sendError.run(client, err, sendError.CODE_ERROR);
             }
         }
     });
@@ -204,7 +225,7 @@ async function art_list_load(){
     fs.readFile("./rss/db/artifacts/artifact_list.json" , "utf-8", async (err, jsonString) => {
         // Error MSG
         if(err){
-            console.log("ERR : "+err);
+            sendError.run(client, err, sendError.CODE_ERROR);
         } else {
             try{
                 const json = JSON.parse(jsonString);
@@ -213,7 +234,7 @@ async function art_list_load(){
                 }
             } catch (err) {
                 // Error MSG
-                console.log("ERR : "+err);
+                sendError.run(client, err, sendError.CODE_ERROR);
             }
         }
     });
@@ -224,7 +245,7 @@ async function tcg_list_load(){
     fs.readFile("./rss/db/tcg/tcg_list.json" , "utf-8", async (err, jsonString) => {
         // Error MSG
         if(err){
-            console.log("ERR : "+err);
+            sendError.run(client, err, sendError.CODE_ERROR);
         } else {
             try{
                 const json = JSON.parse(jsonString);
@@ -233,7 +254,7 @@ async function tcg_list_load(){
                 }
             } catch (err) {
                 // Error MSG
-                console.log("ERR : "+err);
+                sendError.run(client, err, sendError.CODE_ERROR);
             }
         }
     });

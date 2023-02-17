@@ -42,14 +42,15 @@ var isOtherSkillExist = false;
 exports.run = async function(interactionRoot, dataList){
     /*
     dataList :
-    [0]       : itemName
-    [1]...[n] : position (no duplicate) 
+    [0]       : className (xxx.class)
+    [1]       : itemName
+    [2]...[n] : position (no duplicate) 
     this will look like a stack, which pop top item when user back to previous
     backID    : Previous page
     thisID    : This page (Page that u will see after pressed button)
     */
     var len      = dataList.length;
-    var itemName = dataList[0];
+    var itemName = dataList[1];
     var backID   = (len > 2 ? dataList[len-2] : MAIN);
     var thisID   = (len > 2 ? dataList[len-1] : MAIN);
 
@@ -410,8 +411,8 @@ function isUndefinded(value){
 }
 
 function arrToStr(itemName, arr, pageID, command){
-  var str = itemName
-  for(var i = 1; i < arr.length ; i++){
+  var str = "CHARACTER.class"+"XPR"+itemName
+  for(var i = 2; i < arr.length ; i++){
     str = str + "XPR" + arr[i]
   }
 

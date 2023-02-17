@@ -15,7 +15,7 @@ exports.db_user_status = game_user_status;
 exports.db_backpacks = game_backpacks;
 exports.db_events = game_events;
 
-exports.init = function(){
+exports.init = function(client){
     game_user_status = new sqlite.Database(ABS_PATH+"/db/game_user_status.db", sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);
     game_backpacks = new sqlite.Database(ABS_PATH+"/db/game_backpacks.db", sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);
     game_events = new sqlite.Database(ABS_PATH+"/db/game_events.db", sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);

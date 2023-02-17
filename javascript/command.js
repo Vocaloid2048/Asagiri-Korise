@@ -220,7 +220,7 @@ module.exports = {
 					.setDescriptionLocalizations({
 						"zh-TW" : "來看看背包有什麼東西"
 					})
-					.addIntegerOption(option => 
+					.addStringOption(option => 
 						option
 						.setName('backpack_type')
 						.setNameLocalizations({
@@ -231,11 +231,12 @@ module.exports = {
 							"zh-TW" : "請選擇您要查看的物件類型"
 						})
 						.addChoices(
-							{name: lang.ui_siptik_name, value: 0},
-							{name: lang.title_char, value: 1},
-							{name: lang.title_weapons, value: 2},
+							{name: lang.ui_siptik_name, value: "MATERIAL"},
+							{name: lang.title_char, value: "CHAR"},
+							{name: lang.title_weapons, value: "WEAPON"},
 							//{name: lang.title_artifacts, value: 3},
 						)
+						.setRequired(true)
 					),
 			)
 			.addSubcommand((subcommand) =>
